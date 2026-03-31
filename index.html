@@ -3,126 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gestão 30k Ultra</title>
+    <title>Gestão 30k Ultra V3</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --primary: #10b981; --primary-dark: #059669; --danger: #ef4444; 
-            --warning: #f59e0b; --dark: #0f172a; --slate: #64748b; --light: #f8fafc; 
-        }
+        :root { --primary: #10b981; --danger: #ef4444; --warning: #f59e0b; --dark: #0f172a; --slate: #64748b; --light: #f8fafc; }
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--light); margin: 0; padding: 0; color: var(--dark); overflow-x: hidden; }
+        body { background-color: var(--light); margin: 0; padding: 0; color: var(--dark); }
 
-        /* TELA DE LOGIN */
+        /* LOGIN COMPACTO E PADRÃO */
         #tela-login {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%);
-            z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px;
+            background: var(--dark); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px;
         }
-        .login-card { background: white; width: 100%; max-width: 350px; padding: 30px; border-radius: 24px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
-        .login-card i { font-size: 3.5rem; color: var(--primary); margin-bottom: 15px; }
+        .login-card { background: white; width: 100%; max-width: 320px; padding: 25px; border-radius: 16px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .login-card i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+        .login-card h2 { font-size: 1.1rem; margin: 0 0 15px 0; }
+        .login-card input, .login-card select { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; font-size: 0.9rem; }
 
         #app-content { display: none; }
 
-        /* Dashboard Header */
+        /* DASHBOARD */
         .dashboard-fixo { 
             background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%); 
-            color: white; padding: 25px 20px; text-align: center; 
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000;
-            border-bottom: 3px solid var(--primary);
+            color: white; padding: 15px 20px; text-align: center; position: sticky; top: 0; z-index: 1000; border-bottom: 3px solid var(--primary);
         }
-        .reserva-valor { margin: 5px 0; color: var(--warning); font-size: 2.2rem; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        
-        .projeção-box { background: rgba(255,255,255,0.1); padding: 8px; border-radius: 10px; margin-top: 10px; font-size: 0.75rem; border: 1px dashed var(--primary); }
+        .reserva-valor { font-size: 1.6rem; font-weight: 800; color: var(--warning); margin: 5px 0; }
+        .projeção-box { background: rgba(255,255,255,0.08); padding: 6px; border-radius: 8px; margin-top: 8px; font-size: 0.7rem; border: 1px dashed rgba(16,185,129,0.5); }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .stat-card { background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.1); }
+        .barra-bg { background: rgba(255,255,255,0.1); height: 6px; border-radius: 3px; margin: 8px 0; overflow: hidden; }
+        #barra-progresso { background: var(--primary); height: 100%; width: 0%; transition: 1s; }
 
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-        .stat-card { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
-        
-        .nav-tabs { display: flex; background: #fff; position: sticky; top: 220px; z-index: 999; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        .nav-tabs button { flex: 1; padding: 16px; border: none; background: none; font-weight: 700; color: var(--slate); font-size: 0.8rem; cursor: pointer; }
-        .nav-tabs button.active { color: var(--primary); border-bottom: 4px solid var(--primary); background: #f0fdf4; }
+        .nav-tabs { display: flex; background: #fff; position: sticky; top: 185px; z-index: 999; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .nav-tabs button { flex: 1; padding: 12px; border: none; background: none; font-weight: 700; color: var(--slate); font-size: 0.7rem; cursor: pointer; }
+        .nav-tabs button.active { color: var(--primary); border-bottom: 3px solid var(--primary); }
 
-        .container { padding: 20px; max-width: 600px; margin: 0 auto; }
-        .page { display: none; animation: fadeIn 0.4s ease; }
+        .container { padding: 15px; max-width: 500px; margin: 0 auto; }
+        .page { display: none; }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .card { background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 15px; }
 
-        .card { background: white; padding: 20px; border-radius: 18px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.04); margin-bottom: 20px; border: 1px solid #e2e8f0; }
-        
-        /* Input Styles */
-        .input-group { position: relative; margin-bottom: 12px; }
-        .input-group i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--slate); }
-        .input-group input, .input-group select { width: 100%; padding: 14px 14px 14px 42px; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 1rem; background: #f8fafc; transition: 0.3s; }
-        .input-group input:focus { border-color: var(--primary); background: white; }
+        .input-group { position: relative; margin-bottom: 8px; }
+        .input-group i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--slate); font-size: 0.8rem; }
+        .input-group input, .input-group select { width: 100%; padding: 10px 10px 10px 35px; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 0.9rem; background: #f8fafc; }
 
-        .btn-main { background: var(--primary); color: white; border: none; font-weight: 700; padding: 16px; border-radius: 12px; width: 100%; cursor: pointer; font-size: 1rem; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3); }
+        .btn-main { background: var(--primary); color: white; border: none; font-weight: 700; padding: 12px; border-radius: 8px; width: 100%; cursor: pointer; font-size: 0.9rem; }
+        .btn-csv { background: var(--dark); color: white; border: none; padding: 10px; border-radius: 8px; width: 100%; margin-top: 10px; cursor: pointer; font-size: 0.8rem; }
         
-        /* List Items with Icons */
-        .item-transacao { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-radius: 16px; background: #fff; margin-bottom: 12px; border: 1px solid #f1f5f9; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .cat-icon { width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-right: 12px; }
+        .item-transacao { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-radius: 10px; background: #fff; margin-bottom: 8px; border: 1px solid #f1f5f9; font-size: 0.85rem; }
+        .cat-icon { width: 35px; height: 35px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 0.9rem; }
+        .btn-acao { width: 30px; height: 30px; border-radius: 6px; border: 1px solid #eee; background: #fff; margin-left: 4px; color: var(--slate); }
         
-        .btn-acao { width: 38px; height: 38px; border-radius: 10px; border: 1px solid #e2e8f0; background: #fff; color: var(--slate); cursor: pointer; margin-left: 6px; }
-        
-        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--dark); color: white; padding: 14px 28px; border-radius: 50px; font-weight: 600; z-index: 10000; display: none; box-shadow: 0 10px 15px rgba(0,0,0,0.2); }
-        
-        .logout-btn { position: absolute; top: 15px; right: 15px; color: white; opacity: 0.5; font-size: 1.2rem; cursor: pointer; }
+        #aviso-vazio { text-align: center; padding: 20px; color: var(--slate); font-size: 0.8rem; }
+        .logout-btn { position: absolute; top: 10px; right: 10px; color: white; opacity: 0.5; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div id="toast">Sucesso! ✅</div>
-
     <div id="tela-login">
         <div class="login-card">
-            <i class="fa-solid fa-fingerprint"></i>
-            <h2 style="margin-bottom: 5px;">Bem-vindo</h2>
-            <p style="color: var(--slate); font-size: 0.9rem; margin-bottom: 25px;">Acesse sua gestão financeira</p>
-            <div class="input-group">
-                <i class="fa-solid fa-user"></i>
-                <select id="login-usuario">
-                    <option value="">Quem é você?</option>
-                    <option value="Jhones">Jhones</option>
-                    <option value="Tatiane">Tatiane</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <i class="fa-solid fa-key"></i>
-                <input type="password" id="login-senha" placeholder="Sua senha" inputmode="numeric" maxlength="4">
-            </div>
-            <button onclick="verificarLogin()" class="btn-main">ENTRAR AGORA</button>
-            <p id="erro-login" style="color: var(--danger); font-size: 0.8rem; margin-top: 15px; display: none; font-weight: 600;">⚠️ Senha incorreta!</p>
+            <i class="fa-solid fa-circle-user"></i>
+            <h2>Acesso Restrito</h2>
+            <select id="login-usuario"><option value="">Selecione...</option><option value="Jhones">Jhones</option><option value="Tatiane">Tatiane</option></select>
+            <input type="password" id="login-senha" placeholder="Senha de 4 dígitos" inputmode="numeric" maxlength="4">
+            <button onclick="verificarLogin()" class="btn-main">ENTRAR</button>
+            <p id="erro-login" style="color: var(--danger); font-size: 0.75rem; margin-top: 10px; display: none;">Dados incorretos!</p>
         </div>
     </div>
 
     <div id="app-content">
         <div class="dashboard-fixo">
-            <i class="fa-solid fa-right-from-bracket logout-btn" onclick="logout()"></i>
-            <small><i class="fa-solid fa-rocket"></i> Meta de Mudança (30k)</small>
+            <i class="fa-solid fa-power-off logout-btn" onclick="logout()"></i>
+            <small>RESERVA MUDANÇA (30K)</small>
             <div id="saldo-reserva" class="reserva-valor">R$ 0,00</div>
-            
-            <div id="box-projeção" class="projeção-box">
-                <i class="fa-solid fa-calendar-check"></i> <span id="texto-projeção">Calculando previsão...</span>
-            </div>
-
+            <div class="projeção-box"><i class="fa-solid fa-chart-line"></i> <span id="texto-projeção">Analisando histórico...</span></div>
             <div class="stats-grid">
-                <div class="stat-card"><small>SALDO LIVRE</small><strong id="saldo-disponivel">R$ 0,00</strong></div>
-                <div class="stat-card"><small>GASTOS MÊS</small><strong id="total-saidas" style="color: #fda4af;">R$ 0,00</strong></div>
+                <div class="stat-card">DISPONÍVEL<br><strong id="saldo-disponivel">R$ 0,00</strong></div>
+                <div class="stat-card">GASTOS MÊS<br><strong id="total-saidas" style="color: #fca5a5;">R$ 0,00</strong></div>
             </div>
-            
-            <div style="margin-top: 15px;">
-                <div class="barra-bg"><div id="barra-progresso"></div></div>
-                <div style="display: flex; justify-content: space-between; font-size: 0.65rem; font-weight: 700; opacity: 0.9;">
-                    <span id="texto-meta">0% CONCLUÍDO</span>
-                    <span>ALVO: R$ 30.000</span>
-                </div>
+            <div class="barra-bg"><div id="barra-progresso"></div></div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.6rem; font-weight: 700; opacity: 0.8;">
+                <span id="texto-meta">0%</span><span>META: R$ 30.000</span>
             </div>
         </div>
 
         <div class="nav-tabs">
-            <button id="tab-add" class="active" onclick="mudarPagina('add')"><i class="fa-solid fa-plus-circle"></i> LANÇAR</button>
-            <button id="tab-rel" onclick="mudarPagina('rel')"><i class="fa-solid fa-chart-line"></i> RELATÓRIOS</button>
+            <button id="tab-add" class="active" onclick="mudarPagina('add')">NOVO</button>
+            <button id="tab-rel" onclick="mudarPagina('rel')">RELATÓRIOS</button>
         </div>
 
         <div class="container">
@@ -130,42 +99,37 @@
                 <div class="card">
                     <form id="form-financeiro">
                         <input type="hidden" id="edit-id">
-                        <div class="input-group"><i class="fa-solid fa-money-bill-wave"></i><input type="number" id="valor" placeholder="Valor R$" step="0.01" required></div>
-                        <div class="input-group"><i class="fa-solid fa-layer-group"></i>
+                        <div class="input-group"><i class="fa-solid fa-wallet"></i><input type="number" id="valor" placeholder="Valor R$" step="0.01" required></div>
+                        <div class="input-group"><i class="fa-solid fa-list"></i>
                             <select id="tipo" onchange="atualizarCategorias()" required>
-                                <option value="">O que é isso?</option>
-                                <option value="saida">Gasto (Sai do saldo)</option>
-                                <option value="entrada">Ganho (Entra no saldo)</option>
-                                <option value="reserva">Reserva (Meta 30k)</option>
+                                <option value="">Tipo...</option>
+                                <option value="saida">Gasto</option><option value="entrada">Ganho</option><option value="reserva">Reserva</option>
                             </select>
                         </div>
                         <div id="container-categoria" class="input-group" style="display:none;"><i class="fa-solid fa-tag"></i><select id="categoria" onchange="atualizarSubCategorias()"></select></div>
-                        <div id="container-subcategoria" class="input-group" style="display:none;"><i class="fa-solid fa-circle-nodes"></i><select id="subcategoria" onchange="toggleOutros()"></select></div>
-                        <div id="container-outros" class="input-group" style="display:none;"><i class="fa-solid fa-pencil"></i><input type="text" id="desc-outros" placeholder="Descreva aqui..."></div>
-                        <div class="input-group"><i class="fa-solid fa-user-check"></i><input type="text" id="usuario-display" readonly style="color: var(--slate); font-weight: 600;"></div>
+                        <div id="container-subcategoria" class="input-group" style="display:none;"><i class="fa-solid fa-info"></i><select id="subcategoria" onchange="toggleOutros()"></select></div>
+                        <div id="container-outros" class="input-group" style="display:none;"><i class="fa-solid fa-pen"></i><input type="text" id="desc-outros" placeholder="O que é?"></div>
+                        <div class="input-group"><i class="fa-solid fa-user"></i><input type="text" id="usuario-display" readonly style="color:#64748b"></div>
                         <div class="input-group"><i class="fa-solid fa-calendar"></i><input type="date" id="data" required></div>
-                        <button type="submit" id="btn-salvar" class="btn-main">SALVAR AGORA</button>
-                        <button type="button" id="btn-cancelar" onclick="resetForm()" style="display:none; background:#e2e8f0; color:var(--dark); margin-top:10px; border-radius:12px; padding:15px; border:none; width:100%; font-weight:700;">CANCELAR</button>
+                        <button type="submit" id="btn-salvar" class="btn-main">CONFIRMAR</button>
+                        <button type="button" id="btn-cancelar" onclick="resetForm()" style="display:none; background:#ccc; margin-top:8px; padding:10px; border:none; width:100%; border-radius:8px; font-size:0.8rem;">CANCELAR</button>
                     </form>
                 </div>
-                <h3 style="font-size: 1rem; padding-left: 5px;"><i class="fa-solid fa-history"></i> Atividades Recentes</h3>
                 <div id="lista-recente"></div>
             </div>
 
             <div id="page-rel" class="page">
                 <div class="card">
-                    <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-chart-pie"></i> Distribuição por Usuário</h3>
-                    <canvas id="chartUsers" style="max-height: 200px;"></canvas>
-                </div>
-                <div class="card">
-                    <h3><i class="fa-solid fa-calendar-alt"></i> Visão Mensal</h3>
-                    <input type="month" id="filtro-mes" style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 12px;">
-                    <button onclick="processarDados()" class="btn-main" style="background: var(--dark)">VER RELATÓRIO</button>
+                    <input type="month" id="filtro-mes" onchange="processarDados()" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
+                    <button onclick="downloadCSV()" class="btn-csv"><i class="fa-solid fa-file-csv"></i> BAIXAR PLANILHA DO MÊS</button>
                 </div>
                 <div id="conteudo-relatorio">
-                    <div class="card"><canvas id="chartEntradas"></canvas></div>
-                    <div class="card"><canvas id="chartSaidas"></canvas></div>
+                    <div class="card"><canvas id="chartEntradas" style="max-height:150px;"></canvas></div>
+                    <div class="card"><canvas id="chartSaidas" style="max-height:150px;"></canvas></div>
                     <div id="lista-periodo"></div>
+                </div>
+                <div id="aviso-vazio" style="display:none;">
+                    <i class="fa-solid fa-folder-open fa-2x"></i><br><br>Nenhum dado encontrado para este mês.
                 </div>
             </div>
         </div>
@@ -179,153 +143,53 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const colRef = collection(db, "transacoes");
-        let localData = [];
-        let chartE = null; let chartS = null; let chartU = null;
-        let logadoComo = "";
+        let localData = []; let chartE = null; let chartS = null; let logadoComo = "";
 
-        // AUTO-LOGIN
-        window.onload = () => {
-            const salvo = localStorage.getItem('user30k');
-            if(salvo) {
-                logadoComo = salvo;
-                entrarNoApp();
-            }
-        };
-
+        window.onload = () => { const s = localStorage.getItem('user30k'); if(s) { logadoComo = s; entrarNoApp(); } };
         window.verificarLogin = () => {
-            const user = document.getElementById('login-usuario').value;
-            const pass = document.getElementById('login-senha').value;
-            const creds = { "Jhones": "1234", "Tatiane": "4321" };
-
-            if(creds[user] === pass) {
-                logadoComo = user;
-                localStorage.setItem('user30k', user);
-                entrarNoApp();
-            } else {
-                document.getElementById('erro-login').style.display = 'block';
-            }
+            const u = document.getElementById('login-usuario').value; const p = document.getElementById('login-senha').value;
+            if({ "Jhones":"1234", "Tatiane":"4321" }[u] === p) { logadoComo = u; localStorage.setItem('user30k', u); entrarNoApp(); } 
+            else { document.getElementById('erro-login').style.display = 'block'; }
         };
+        function entrarNoApp() { document.getElementById('tela-login').style.display='none'; document.getElementById('app-content').style.display='block'; document.getElementById('usuario-display').value="Logado como: "+logadoComo; processarDados(); }
+        window.logout = () => { localStorage.removeItem('user30k'); location.reload(); };
 
-        function entrarNoApp() {
-            document.getElementById('tela-login').style.display = 'none';
-            document.getElementById('app-content').style.display = 'block';
-            document.getElementById('usuario-display').value = "Usuário: " + logadoComo;
-            processarDados();
-        }
-
-        window.logout = () => {
-            localStorage.removeItem('user30k');
-            location.reload();
-        };
-
-        // ÍCONES POR CATEGORIA
-        const icones = {
-            "🛒 Mercado": "fa-cart-shopping", "🏠 Contas Fixas": "fa-house-lock", "✂️ Papelaria": "fa-pen-nib",
-            "🚗 Carro": "fa-car", "🍕 Lazer": "fa-utensils", "💊 Saúde": "fa-briefcase-medical",
-            "💵 Rendimentos": "fa-money-check-dollar", "Reserva": "fa-piggy-bank"
-        };
-
-        const catsSaida = {
-            "🛒 Mercado": ["Compras do Mês", "Higiene", "Hortifruti", "Outros"],
-            "🏠 Contas Fixas": ["Aluguel", "Condomínio", "Luz", "Água", "Internet", "Gás", "Streaming", "IPTU/IPVA", "Outros"],
-            "✂️ Papelaria": ["Materiais", "Equipamentos", "Embalagens", "Outros"],
-            "🚗 Carro": ["Combustível", "Manutenção", "Seguro", "Outros"],
-            "🍕 Lazer": ["Restaurante", "Cinema", "Viagem", "Outros"],
-            "💊 Saúde": ["Farmácia", "Consulta", "Exames", "Outros"],
-            "⚙️ Outros": ["Outros"]
-        };
-        const catsEntrada = { "💵 Rendimentos": ["Salário", "Benefício", "Eventos", "Extras", "Vendas Papelaria", "Reembolso", "Outros"] };
-
-        window.showToast = (msg) => {
-            const t = document.getElementById('toast');
-            t.innerText = msg; t.style.display = 'block';
-            setTimeout(() => { t.style.display = 'none'; }, 2500);
-        };
+        const icones = { "🛒 Mercado":"fa-cart-shopping", "🏠 Contas Fixas":"fa-home", "✂️ Papelaria":"fa-cut", "🚗 Carro":"fa-car", "🍕 Lazer":"fa-pizza-slice", "💊 Saúde":"fa-medkit", "💵 Rendimentos":"fa-dollar-sign", "Reserva":"fa-piggy-bank" };
+        const catsSaida = { "🛒 Mercado":["Compras", "Higiene", "Hortifruti", "Outros"], "🏠 Contas Fixas":["Aluguel", "Condomínio", "Luz", "Água", "Internet", "Gás", "Streaming", "IPTU/IPVA", "Outros"], "✂️ Papelaria":["Materiais", "Equipamentos", "Embalagens", "Outros"], "🚗 Carro":["Combustível", "Manutenção", "Seguro", "Outros"], "🍕 Lazer":["Restaurante", "Cinema", "Viagem", "Outros"], "💊 Saúde":["Farmácia", "Consulta", "Exames", "Outros"], "⚙️ Outros":["Outros"] };
+        const catsEntrada = { "💵 Rendimentos":["Salário", "Benefício", "Eventos", "Extras", "Vendas Papelaria", "Reembolso", "Outros"] };
 
         window.atualizarCategorias = () => {
-            const tipo = document.getElementById('tipo').value;
-            const selectCat = document.getElementById('categoria');
-            selectCat.innerHTML = '<option value="">Selecione Categoria...</option>';
-            document.getElementById('container-categoria').style.display = (tipo && tipo !== 'reserva') ? 'block' : 'none';
+            const t = document.getElementById('tipo').value; const s = document.getElementById('categoria');
+            s.innerHTML = '<option value="">Categoria...</option>';
+            document.getElementById('container-categoria').style.display = (t && t!=='reserva') ? 'block' : 'none';
             document.getElementById('container-subcategoria').style.display = 'none';
-            if(tipo && tipo !== 'reserva'){
-                const lista = tipo === 'saida' ? catsSaida : catsEntrada;
-                Object.keys(lista).forEach(c => { selectCat.innerHTML += `<option value="${c}">${c}</option>`; });
-            }
+            if(t && t!=='reserva') Object.keys(t==='saida'?catsSaida:catsEntrada).forEach(c => s.innerHTML += `<option value="${c}">${c}</option>`);
         };
-
         window.atualizarSubCategorias = () => {
-            const cat = document.getElementById('categoria').value;
-            const tipo = document.getElementById('tipo').value;
-            const selectSub = document.getElementById('subcategoria');
-            selectSub.innerHTML = '<option value="">Selecione Detalhe...</option>';
-            document.getElementById('container-subcategoria').style.display = cat ? 'block' : 'none';
-            if(cat){
-                const lista = tipo === 'saida' ? catsSaida[cat] : (catsEntrada[cat] || []);
-                lista.forEach(s => { selectSub.innerHTML += `<option value="${s}">${s}</option>`; });
-            }
+            const c = document.getElementById('categoria').value; const t = document.getElementById('tipo').value; const s = document.getElementById('subcategoria');
+            s.innerHTML = '<option value="">Detalhe...</option>';
+            document.getElementById('container-subcategoria').style.display = c ? 'block' : 'none';
+            if(c) (t==='saida'?catsSaida[c]:catsEntrada[c]).forEach(x => s.innerHTML += `<option value="${x}">${x}</option>`);
         };
-
-        window.toggleOutros = () => {
-            const sub = document.getElementById('subcategoria').value;
-            document.getElementById('container-outros').style.display = (sub === 'Outros') ? 'block' : 'none';
-        };
-
-        window.mudarPagina = (p) => {
-            document.querySelectorAll('.page, .nav-tabs button').forEach(el => el.classList.remove('active'));
-            document.getElementById('page-'+p).classList.add('active');
-            document.getElementById('tab-'+p).classList.add('active');
-            processarDados();
-        };
+        window.toggleOutros = () => document.getElementById('container-outros').style.display = (document.getElementById('subcategoria').value==='Outros'?'block':'none');
+        window.mudarPagina = (p) => { document.querySelectorAll('.page, .nav-tabs button').forEach(x => x.classList.remove('active')); document.getElementById('page-'+p).classList.add('active'); document.getElementById('tab-'+p).classList.add('active'); };
 
         document.getElementById('form-financeiro').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('edit-id').value;
-            const sub = document.getElementById('subcategoria').value;
-            const dados = {
-                valor: parseFloat(document.getElementById('valor').value),
-                tipo: document.getElementById('tipo').value,
-                categoria: document.getElementById('categoria').value || "Reserva",
-                subcategoria: sub === 'Outros' ? document.getElementById('desc-outros').value : (sub || "Aporte Meta"),
-                usuario: logadoComo,
-                data: document.getElementById('data').value,
-                timestamp: new Date().getTime()
-            };
+            e.preventDefault(); const id = document.getElementById('edit-id').value;
+            const dados = { valor: parseFloat(document.getElementById('valor').value), tipo: document.getElementById('tipo').value, categoria: document.getElementById('categoria').value||"Reserva", subcategoria: document.getElementById('subcategoria').value==='Outros'?document.getElementById('desc-outros').value:(document.getElementById('subcategoria').value||"Aporte Meta"), usuario: logadoComo, data: document.getElementById('data').value, timestamp: new Date().getTime() };
             id ? await updateDoc(doc(db, "transacoes", id), dados) : await addDoc(colRef, dados);
-            showToast("Salvo com sucesso!"); resetForm();
+            resetForm();
         });
 
-        window.excluirItem = async (id) => { if(confirm("Deseja apagar este registro?")) await deleteDoc(doc(db, "transacoes", id)); };
-
+        window.excluirItem = async (id) => { if(confirm("Apagar?")) await deleteDoc(doc(db, "transacoes", id)); };
         window.editarItem = (id) => {
-            const t = localData.find(x => x.id === id);
-            document.getElementById('edit-id').value = id;
-            document.getElementById('valor').value = t.valor;
-            document.getElementById('tipo').value = t.tipo;
-            atualizarCategorias();
-            if(t.tipo !== 'reserva') document.getElementById('categoria').value = t.categoria;
-            atualizarSubCategorias();
-            document.getElementById('subcategoria').value = t.subcategoria;
-            document.getElementById('data').value = t.data;
-            document.getElementById('btn-salvar').innerText = "ATUALIZAR DADOS";
-            document.getElementById('btn-cancelar').style.display = "block";
-            mudarPagina('add');
-            window.scrollTo({top: 0, behavior: 'smooth'});
+            const t = localData.find(x => x.id === id); document.getElementById('edit-id').value = id; document.getElementById('valor').value = t.valor; document.getElementById('tipo').value = t.tipo;
+            atualizarCategorias(); document.getElementById('categoria').value = t.categoria; atualizarSubCategorias(); document.getElementById('subcategoria').value = t.subcategoria;
+            document.getElementById('data').value = t.data; document.getElementById('btn-salvar').innerText = "ATUALIZAR"; document.getElementById('btn-cancelar').style.display = "block"; mudarPagina('add');
         };
+        window.resetForm = () => { document.getElementById('edit-id').value = ""; document.getElementById('form-financeiro').reset(); document.getElementById('data').valueAsDate = new Date(); document.getElementById('usuario-display').value = "Logado como: " + logadoComo; document.getElementById('btn-salvar').innerText = "CONFIRMAR"; document.getElementById('btn-cancelar').style.display = "none"; };
 
-        window.resetForm = () => {
-            document.getElementById('edit-id').value = "";
-            document.getElementById('form-financeiro').reset();
-            document.getElementById('data').valueAsDate = new Date();
-            document.getElementById('usuario-display').value = "Usuário: " + logadoComo;
-            document.getElementById('btn-salvar').innerText = "SALVAR AGORA";
-            document.getElementById('btn-cancelar').style.display = "none";
-        };
-
-        onSnapshot(query(colRef, orderBy("timestamp", "desc")), (snap) => {
-            localData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-            processarDados();
-        });
+        onSnapshot(query(colRef, orderBy("timestamp", "desc")), (snap) => { localData = snap.docs.map(d => ({ id: d.id, ...d.data() })); processarDados(); });
 
         window.processarDados = () => {
             const rT = localData.filter(t => t.tipo === 'reserva').reduce((a, b) => a + b.valor, 0);
@@ -338,26 +202,32 @@
             
             const perc = Math.min((rT/30000)*100, 100);
             document.getElementById('barra-progresso').style.width = perc + '%';
-            document.getElementById('texto-meta').innerText = `${perc.toFixed(1)}% CONCLUÍDO`;
+            document.getElementById('texto-meta').innerText = `${perc.toFixed(1)}%`;
 
-            // LÓGICA DE PROJEÇÃO
-            const hoje = new Date();
-            const tresMesesAtras = new Date(); tresMesesAtras.setMonth(hoje.getMonth() - 3);
-            const economiaRecente = localData.filter(t => t.tipo === 'reserva' && new Date(t.data) > tresMesesAtras).reduce((a,b)=>a+b.valor, 0) / 3;
+            // PROJEÇÃO BASEADA NO MÊS ATUAL
+            const mesAtual = new Date().toISOString().substring(0, 7);
+            const economizadoMes = localData.filter(t => t.tipo === 'reserva' && t.data.startsWith(mesAtual)).reduce((a,b)=>a+b.valor, 0);
             
-            if(economiaRecente > 0) {
-                const mesesFaltantes = (30000 - rT) / economiaRecente;
-                const dataAlvo = new Date(); dataAlvo.setMonth(hoje.getMonth() + Math.ceil(mesesFaltantes));
-                const nomeMes = dataAlvo.toLocaleString('pt-BR', { month: 'long', year: 'numeric' });
-                document.getElementById('texto-projeção').innerText = `Meta estimada para: ${nomeMes}`;
+            if(economizadoMes > 0) {
+                const mesesFaltantes = Math.ceil((30000 - rT) / economizadoMes);
+                document.getElementById('texto-projeção').innerText = `Mantendo R$ ${economizadoMes.toLocaleString('pt-BR')}/mês, faltam ${mesesFaltantes} meses.`;
+            } else {
+                document.getElementById('texto-projeção').innerText = "Economize este mês para ver a projeção!";
             }
 
-            const mes = document.getElementById('filtro-mes').value;
-            const dM = localData.filter(t => t.data.startsWith(mes));
-            if(dM.length > 0) updateCharts(dM);
-            updateUserChart();
-            document.getElementById('lista-recente').innerHTML = renderHTML(localData.slice(0, 10));
-            document.getElementById('lista-periodo').innerHTML = renderHTML(dM);
+            const mesFiltro = document.getElementById('filtro-mes').value;
+            const dadosMes = localData.filter(t => t.data.startsWith(mesFiltro));
+            
+            if(dadosMes.length > 0) {
+                document.getElementById('conteudo-relatorio').style.display = 'block';
+                document.getElementById('aviso-vazio').style.display = 'none';
+                updateCharts(dadosMes);
+            } else {
+                document.getElementById('conteudo-relatorio').style.display = 'none';
+                document.getElementById('aviso-vazio').style.display = 'block';
+            }
+            document.getElementById('lista-recente').innerHTML = renderHTML(localData.slice(0, 8));
+            document.getElementById('lista-periodo').innerHTML = renderHTML(dadosMes);
         };
 
         function updateCharts(dados) {
@@ -367,47 +237,39 @@
             };
             const dE = prep('entrada'); const dS = prep('saida');
             if(chartE) chartE.destroy(); if(chartS) chartS.destroy();
-            chartE = new Chart(document.getElementById('chartEntradas'), { type:'bar', data:{ labels:dE.l, datasets:[{label:'Ganhos R$', data:dE.v, backgroundColor:'#10b981'}] }, options: { plugins: { legend: { display: false } } } });
-            chartS = new Chart(document.getElementById('chartSaidas'), { type:'bar', data:{ labels:dS.l, datasets:[{label:'Gastos R$', data:dS.v, backgroundColor:'#ef4444'}] }, options: { plugins: { legend: { display: false } } } });
+            chartE = new Chart(document.getElementById('chartEntradas'), { type:'bar', data:{ labels:dE.l, datasets:[{label:'Ganhos R$', data:dE.v, backgroundColor:'#10b981'}] }, options:{ plugins:{ legend:{display:false} } } });
+            chartS = new Chart(document.getElementById('chartSaidas'), { type:'bar', data:{ labels:dS.l, datasets:[{label:'Gastos R$', data:dS.v, backgroundColor:'#ef4444'}] }, options:{ plugins:{ legend:{display:false} } } });
         }
 
-        function updateUserChart() {
-            const jhones = localData.filter(t => t.usuario === 'Jhones').length;
-            const tatiane = localData.filter(t => t.usuario === 'Tatiane').length;
-            if(chartU) chartU.destroy();
-            chartU = new Chart(document.getElementById('chartUsers'), { 
-                type: 'doughnut', 
-                data: { labels: ['Jhones', 'Tatiane'], datasets: [{ data: [jhones, tatiane], backgroundColor: ['#3b82f6', '#ec4899'] }] },
-                options: { cutout: '70%', plugins: { legend: { position: 'bottom' } } }
-            });
-        }
+        window.downloadCSV = () => {
+            const mes = document.getElementById('filtro-mes').value;
+            const dados = localData.filter(t => t.data.startsWith(mes));
+            if(dados.length === 0) return alert("Sem dados para exportar!");
+            
+            let csv = "Data;Usuario;Tipo;Categoria;Subcategoria;Valor\n";
+            dados.forEach(t => { csv += `${t.data};${t.usuario};${t.tipo};${t.categoria};${t.subcategoria};${t.valor}\n`; });
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `relatorio_30k_${mes}.csv`;
+            link.click();
+        };
 
         function renderHTML(lista) {
-            return lista.map(t => {
-                const iconClass = icones[t.categoria] || "fa-receipt";
-                const color = t.tipo === 'entrada' ? '#dcfce7' : (t.tipo === 'saida' ? '#fee2e2' : '#fef3c7');
-                const iconColor = t.tipo === 'entrada' ? '#166534' : (t.tipo === 'saida' ? '#991b1b' : '#92400e');
-                
-                return `
+            return lista.map(t => `
                 <div class="item-transacao">
-                    <div style="display: flex; align-items: center;">
-                        <div class="cat-icon" style="background: ${color}; color: ${iconColor};">
-                            <i class="fa-solid ${iconClass}"></i>
-                        </div>
-                        <div>
-                            <strong style="font-size: 0.95rem;">${t.subcategoria}</strong><br>
-                            <small style="color: var(--slate); font-size: 0.7rem;">${t.usuario} • ${new Date(t.data + 'T00:00:00').toLocaleDateString('pt-BR')}</small>
-                        </div>
+                    <div style="display:flex; align-items:center;">
+                        <div class="cat-icon" style="background:#f1f5f9; color:var(--dark);"><i class="fa-solid ${icones[t.categoria]||'fa-receipt'}"></i></div>
+                        <div><strong>${t.subcategoria}</strong><br><small>${t.data.split('-').reverse().join('/')}</small></div>
                     </div>
                     <div style="text-align:right">
-                        <strong style="color: var(--dark); font-size: 1rem;">R$ ${t.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong><br>
-                        <div style="margin-top:5px;">
-                            <button class="btn-acao" onclick="editarItem('${t.id}')"><i class="fa-solid fa-edit"></i></button>
-                            <button class="btn-acao" onclick="excluirItem('${t.id}')"><i class="fa-solid fa-trash"></i></button>
-                        </div>
+                        <strong>R$ ${t.valor.toLocaleString('pt-BR')}</strong><br>
+                        <button class="btn-acao" onclick="editarItem('${t.id}')"><i class="fa-solid fa-edit"></i></button>
+                        <button class="btn-acao" onclick="excluirItem('${t.id}')"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
-            `}).join('');
+            `).join('');
         }
         document.getElementById('data').valueAsDate = new Date();
         document.getElementById('filtro-mes').value = new Date().toISOString().substring(0, 7);
