@@ -1,29 +1,9 @@
-// Substitua apenas a função updateCharts no seu script para aplicar a mudança:
-
-function updateCharts(dados) {
-    const prepSub = (tipo) => {
-        const r = {}; 
-        // Filtra pelo tipo e agrupa pelo nome da SUBCATEGORIA
-        dados.filter(t => t.tipo === tipo).forEach(t => { 
-            const nomeExibicao = t.subcategoria || t.categoria;
-            r[nomeExibicao] = (r[nomeExibicao] || 0) + t.valor; 
-        });
-        return { 
-            l: Object.keys(r), 
-            v: Object.values(r) 
-        };
-    };
-
-    const dE = prepSub('entrada'); 
-    const dS = prepSub('saida');
-
-    if(chartE) chartE.destroy(); 
-    if(chartS) chartS.destroy();<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gestão Financeira Pro - V9</title>
+    <title>Gestão Financeira Pro - V10</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -50,7 +30,7 @@ function updateCharts(dados) {
         .barra-bg { background: rgba(255,255,255,0.1); height: 10px; border-radius: 5px; margin: 10px auto; overflow: hidden; max-width: 600px; }
         #barra-progresso { background: var(--primary); height: 100%; width: 0%; transition: 1.5s ease-in-out; }
 
-        /* LAYOUT RESPONSIVO */
+        /* LAYOUT */
         .main-layout { display: flex; flex-direction: column; gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
         .card { background: white; padding: 20px; border-radius: 15px; border: 1px solid #e2e8f0; margin-bottom: 15px; }
 
@@ -59,10 +39,8 @@ function updateCharts(dados) {
             .col-form { flex: 1; position: sticky; top: 250px; }
             .col-list { flex: 1.5; }
             .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-            .nav-tabs { position: static !important; border-radius: 10px; margin-bottom: 20px; }
         }
 
-        /* NAVEGAÇÃO */
         .nav-tabs { display: flex; background: #fff; position: sticky; top: 195px; z-index: 999; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .nav-tabs button { flex: 1; padding: 15px; border: none; background: none; font-weight: 700; color: var(--slate); cursor: pointer; }
         .nav-tabs button.active { color: var(--primary); border-bottom: 4px solid var(--primary); background: #f0fdf4; }
@@ -72,15 +50,13 @@ function updateCharts(dados) {
         .input-group i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--slate); }
         .input-group input, .input-group select { width: 100%; padding: 12px 12px 12px 40px; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 1rem; background: #f8fafc; }
 
-        .btn-main { background: var(--primary); color: white; border: none; font-weight: 700; padding: 15px; border-radius: 10px; width: 100%; cursor: pointer; font-size: 1rem; }
-        .btn-csv { background: var(--dark); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; margin-top: 10px; cursor: pointer; }
+        .btn-main { background: var(--primary); color: white; border: none; font-weight: 700; padding: 15px; border-radius: 10px; width: 100%; cursor: pointer; }
+        .btn-csv { background: var(--dark); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; cursor: pointer; }
         
-        /* ITENS DA LISTA */
         .item-transacao { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-radius: 12px; background: #fff; margin-bottom: 10px; border: 1px solid #f1f5f9; }
         .cat-icon { width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 1.2rem; }
         .btn-acao { background: none; border: 1px solid #eee; padding: 8px; border-radius: 8px; margin-left: 5px; color: var(--slate); cursor: pointer; }
 
-        /* EDITOR META */
         .meta-editor { display: none; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; align-items: center; justify-content: center; gap: 10px; }
         .logout-btn { position: absolute; top: 15px; right: 20px; color: white; opacity: 0.5; font-size: 1.5rem; cursor: pointer; }
     </style>
@@ -89,95 +65,87 @@ function updateCharts(dados) {
 
     <div id="tela-login">
         <div class="login-card">
-            <i class="fa-solid fa-user-lock" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 10px;"></i>
-            <h2>Acesso Restrito</h2>
-            <select id="login-usuario" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px;">
-                <option value="">Selecione o Usuário...</option>
-                <option value="Jhones">Jhones</option>
-                <option value="Tatiane">Tatiane</option>
-            </select>
-            <input type="password" id="login-senha" placeholder="Senha de 4 dígitos" inputmode="numeric" maxlength="4" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <button onclick="verificarLogin()" class="btn-main">ENTRAR NO APP</button>
-            <p id="erro-login" style="color: var(--danger); font-size: 0.8rem; margin-top: 10px; display: none;">Dados incorretos!</p>
+            <i class="fa-solid fa-shield-halved" style="font-size: 2.5rem; color: var(--primary);"></i>
+            <h2 style="margin: 15px 0;">Acesso Gestão</h2>
+            <select id="login-usuario" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px;"><option value="">Usuário...</option><option value="Jhones">Jhones</option><option value="Tatiane">Tatiane</option></select>
+            <input type="password" id="login-senha" placeholder="Senha 4 dígitos" inputmode="numeric" maxlength="4" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;">
+            <button onclick="verificarLogin()" class="btn-main">ENTRAR</button>
+            <p id="erro-login" style="color: var(--danger); font-size: 0.8rem; margin-top: 10px; display: none;">Senha incorreta!</p>
         </div>
     </div>
 
     <div id="app-content">
         <div class="dashboard-fixo">
             <i class="fa-solid fa-power-off logout-btn" onclick="logout()"></i>
-            <small>VALOR TOTAL ACUMULADO</small>
+            <small>RESERVA TOTAL ACUMULADA</small>
             <div id="saldo-reserva" class="reserva-valor">R$ 0,00</div>
             
-            <div class="projeção-box"><i class="fa-solid fa-chart-line"></i> <span id="texto-projeção">Analisando...</span></div>
+            <div class="projeção-box"><i class="fa-solid fa-chart-line"></i> <span id="texto-projeção">Processando dados...</span></div>
             
             <div class="stats-grid">
-                <div class="stat-card">DISPONÍVEL<br><strong id="saldo-disponivel">R$ 0,00</strong></div>
+                <div class="stat-card">SALDO LIVRE<br><strong id="saldo-disponivel">R$ 0,00</strong></div>
                 <div class="stat-card">GASTOS MÊS<br><strong id="total-saidas" style="color: #fca5a5;">R$ 0,00</strong></div>
             </div>
             
             <div class="barra-bg"><div id="barra-progresso"></div></div>
             <div style="max-width: 600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; font-weight: 700;">
                 <span id="texto-meta-porcentagem">0%</span>
-                <span onclick="toggleMetaEditor()" style="cursor:pointer">OBJETIVO: <span id="valor-meta-display">R$ 30.000</span> <i class="fa-solid fa-gear" style="opacity:0.5; margin-left:5px"></i></span>
+                <span onclick="toggleMetaEditor()" style="cursor:pointer">META: <span id="valor-meta-display">R$ 30.000</span> <i class="fa-solid fa-gear" style="opacity:0.5"></i></span>
             </div>
 
             <div id="meta-editor" class="meta-editor">
                 <input type="number" id="input-nova-meta" placeholder="Novo Valor R$">
-                <button onclick="salvarNovaMeta()" style="background:var(--primary); color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:700">SALVAR</button>
+                <button onclick="salvarNovaMeta()" style="background:var(--primary); color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer">OK</button>
             </div>
         </div>
 
         <div class="nav-tabs">
-            <button id="tab-add" class="active" onclick="mudarPagina('add')">NOVO REGISTRO</button>
+            <button id="tab-add" class="active" onclick="mudarPagina('add')">LANÇAMENTOS</button>
             <button id="tab-rel" onclick="mudarPagina('rel')">RELATÓRIOS</button>
         </div>
 
         <div class="main-layout">
             <div id="page-add" class="page active" style="width: 100%;">
                 <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-                    <div class="col-form" style="flex: 1; min-width: 320px;">
+                    <div class="col-form" style="flex: 1; min-width: 300px;">
                         <div class="card">
                             <form id="form-financeiro">
                                 <input type="hidden" id="edit-id">
-                                <div class="input-group"><i class="fa-solid fa-wallet"></i><input type="number" id="valor" placeholder="0,00" step="0.01" required></div>
-                                <div class="input-group"><i class="fa-solid fa-list-ul"></i>
+                                <div class="input-group"><i class="fa-solid fa-money-bill-wave"></i><input type="number" id="valor" placeholder="Valor R$" step="0.01" required></div>
+                                <div class="input-group"><i class="fa-solid fa-tags"></i>
                                     <select id="tipo" onchange="atualizarCategorias()" required>
-                                        <option value="">Tipo de Movimentação...</option>
-                                        <option value="saida">Gasto</option><option value="entrada">Ganho</option><option value="reserva">Reserva p/ Meta</option>
+                                        <option value="">Tipo...</option>
+                                        <option value="saida">Gasto</option><option value="entrada">Ganho</option><option value="reserva">Reserva Meta</option>
                                     </select>
                                 </div>
-                                <div id="container-categoria" class="input-group" style="display:none;"><i class="fa-solid fa-tag"></i><select id="categoria" onchange="atualizarSubCategorias()"></select></div>
-                                <div id="container-subcategoria" class="input-group" style="display:none;"><i class="fa-solid fa-circle-info"></i><select id="subcategoria" onchange="toggleOutros()"></select></div>
-                                <div id="container-outros" class="input-group" style="display:none;"><i class="fa-solid fa-pencil"></i><input type="text" id="desc-outros" placeholder="Descrição"></div>
+                                <div id="container-categoria" class="input-group" style="display:none;"><i class="fa-solid fa-list"></i><select id="categoria" onchange="atualizarSubCategorias()"></select></div>
+                                <div id="container-subcategoria" class="input-group" style="display:none;"><i class="fa-solid fa-info"></i><select id="subcategoria" onchange="toggleOutros()"></select></div>
+                                <div id="container-outros" class="input-group" style="display:none;"><i class="fa-solid fa-pen"></i><input type="text" id="desc-outros" placeholder="Descrição"></div>
                                 <div class="input-group"><i class="fa-solid fa-user"></i><input type="text" id="usuario-display" readonly style="background:#eee"></div>
                                 <div class="input-group"><i class="fa-solid fa-calendar"></i><input type="date" id="data" required></div>
                                 <button type="submit" id="btn-salvar" class="btn-main">CONFIRMAR</button>
                             </form>
                         </div>
                     </div>
-                    <div class="col-list" style="flex: 1.5; min-width: 320px;">
+                    <div class="col-list" style="flex: 1.5; min-width: 300px;">
                         <div id="lista-recente"></div>
                     </div>
                 </div>
             </div>
 
             <div id="page-rel" class="page" style="width: 100%;">
-                <div class="card" style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
-                    <input type="month" id="filtro-mes" onchange="processarDados()" style="flex:1; padding:12px; border-radius:10px; border: 1px solid #ddd;">
-                    <button onclick="downloadCSV()" class="btn-csv" style="flex:1; margin-top:0"><i class="fa-solid fa-file-excel"></i> DOWNLOAD CSV</button>
+                <div class="card" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <input type="month" id="filtro-mes" onchange="processarDados()" style="flex:1; padding:10px; border-radius:8px; border:1px solid #ddd;">
+                    <button onclick="downloadCSV()" class="btn-csv" style="flex:1;"><i class="fa-solid fa-file-export"></i> CSV</button>
                 </div>
-                
                 <div id="conteudo-relatorio">
-                    <div class="charts-grid" style="margin-top: 10px;">
-                        <div class="card"><h4>Entradas por Subcategoria</h4><canvas id="chartEntradas" style="max-height:350px"></canvas></div>
-                        <div class="card"><h4>Gastos por Subcategoria</h4><canvas id="chartSaidas" style="max-height:350px"></canvas></div>
+                    <div class="charts-grid">
+                        <div class="card"><h4>Ganhos / Subcategoria</h4><canvas id="chartEntradas" style="max-height:300px"></canvas></div>
+                        <div class="card"><h4>Gastos / Subcategoria</h4><canvas id="chartSaidas" style="max-height:300px"></canvas></div>
                     </div>
-                    <div id="lista-periodo" style="margin-top: 20px;"></div>
+                    <div id="lista-periodo"></div>
                 </div>
-                
-                <div id="aviso-vazio" class="card" style="display:none; text-align:center; padding: 40px; color: var(--slate);">
-                    <i class="fa-solid fa-face-meh fa-2x"></i><br><br>Mês indisponível ou sem movimentação.
-                </div>
+                <div id="aviso-vazio" class="card" style="display:none; text-align:center;">Sem dados no mês selecionado.</div>
             </div>
         </div>
     </div>
@@ -190,7 +158,11 @@ function updateCharts(dados) {
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const colRef = collection(db, "transacoes");
-        let localData = []; let chartE = null; let chartS = null; let logadoComo = "";
+        
+        let localData = []; 
+        let chartE = null; 
+        let chartS = null; 
+        let logadoComo = "";
         let valorMeta = parseFloat(localStorage.getItem('meta_objetivo')) || 30000;
 
         window.onload = () => {
@@ -285,13 +257,13 @@ function updateCharts(dados) {
             const projElement = document.getElementById('texto-projeção');
 
             if(rT >= valorMeta) {
-                projElement.innerHTML = "✨ <strong>META ALCANÇADA!</strong>";
+                projElement.innerHTML = "✨ <strong>OBJETIVO CONCLUÍDO!</strong>";
             } else if(economiaMes > 0) {
                 const meses = Math.ceil((valorMeta - rT) / economiaMes);
                 const dataAlvo = new Date(); dataAlvo.setMonth(dataAlvo.getMonth() + meses);
-                projElement.innerHTML = `No ritmo de R$ ${economiaMes.toLocaleString('pt-BR')}/mês, faltam <strong>${meses} meses</strong>.<br><span class="data-alvo"><i class="fa-solid fa-calendar-check"></i> Final em: ${dataAlvo.toLocaleString('pt-BR', {month:'long'})} de ${dataAlvo.getFullYear()}</span>`;
+                projElement.innerHTML = `No ritmo de R$ ${economiaMes.toLocaleString('pt-BR')}/mês, faltam <strong>${meses} meses</strong>.<br><span class="data-alvo"><i class="fa-solid fa-calendar-check"></i> Previsão: ${dataAlvo.toLocaleString('pt-BR', {month:'long'})} de ${dataAlvo.getFullYear()}</span>`;
             } else {
-                projElement.innerHTML = "Reserve algo este mês para ver a projeção.";
+                projElement.innerHTML = "Adicione uma reserva este mês para ver a previsão.";
             }
 
             const mesFiltro = document.getElementById('filtro-mes').value;
@@ -309,25 +281,35 @@ function updateCharts(dados) {
             const prepSub = (tipo) => {
                 const r = {}; 
                 dados.filter(t => t.tipo === tipo).forEach(t => { 
-                    const nome = t.subcategoria || t.categoria;
+                    const nome = t.subcategoria || t.categoria || "Geral";
                     r[nome] = (r[nome] || 0) + t.valor; 
                 });
                 return { l: Object.keys(r), v: Object.values(r) };
             };
-            const dE = prepSub('entrada'); const dS = prepSub('saida');
-            if(chartE) chartE.destroy(); if(chartS) chartS.destroy();
+
+            const dE = prepSub('entrada'); 
+            const dS = prepSub('saida');
+
+            if(chartE) chartE.destroy(); 
+            if(chartS) chartS.destroy();
             
-            // GRÁFICOS DE BARRA HORIZONTAL POR SUBCATEGORIA
-            chartE = new Chart(document.getElementById('chartEntradas'), { 
-                type:'bar', 
-                data:{ labels:dE.l, datasets:[{label:'R$', data:dE.v, backgroundColor:'#10b981'}] },
-                options:{ indexAxis:'y', plugins:{ legend:{display:false} } }
-            });
-            chartS = new Chart(document.getElementById('chartSaidas'), { 
-                type:'bar', 
-                data:{ labels:dS.l, datasets:[{label:'R$', data:dS.v, backgroundColor:'#ef4444'}] },
-                options:{ indexAxis:'y', plugins:{ legend:{display:false} } }
-            });
+            const ctxE = document.getElementById('chartEntradas');
+            if(ctxE) {
+                chartE = new Chart(ctxE, { 
+                    type:'bar', 
+                    data:{ labels:dE.l, datasets:[{label:'R$', data:dE.v, backgroundColor:'#10b981', borderRadius:5}] },
+                    options:{ indexAxis:'y', plugins:{ legend:{display:false} }, scales:{ x:{beginAtZero:true} } }
+                });
+            }
+
+            const ctxS = document.getElementById('chartSaidas');
+            if(ctxS) {
+                chartS = new Chart(ctxS, { 
+                    type:'bar', 
+                    data:{ labels:dS.l, datasets:[{label:'R$', data:dS.v, backgroundColor:'#ef4444', borderRadius:5}] },
+                    options:{ indexAxis:'y', plugins:{ legend:{display:false} }, scales:{ x:{beginAtZero:true} } }
+                });
+            }
         }
 
         window.downloadCSV = () => {
@@ -358,42 +340,3 @@ function updateCharts(dados) {
     </script>
 </body>
 </html>
-    
-    // Gráfico de Entradas Detalhado
-    chartE = new Chart(document.getElementById('chartEntradas'), { 
-        type: 'bar', 
-        data: { 
-            labels: dE.l, 
-            datasets: [{
-                label: 'R$', 
-                data: dE.v, 
-                backgroundColor: '#10b981',
-                borderRadius: 5
-            }] 
-        },
-        options: { 
-            indexAxis: 'y', // Inverti para barras horizontais, fica melhor para ler nomes de subcategorias compridas
-            plugins: { legend: { display: false } }, 
-            scales: { x: { beginAtZero: true } } 
-        }
-    });
-
-    // Gráfico de Saídas Detalhado
-    chartS = new Chart(document.getElementById('chartSaidas'), { 
-        type: 'bar', 
-        data: { 
-            labels: dS.l, 
-            datasets: [{
-                label: 'R$', 
-                data: dS.v, 
-                backgroundColor: '#ef4444',
-                borderRadius: 5
-            }] 
-        },
-        options: { 
-            indexAxis: 'y', // Barras horizontais para facilitar a leitura no celular e desktop
-            plugins: { legend: { display: false } }, 
-            scales: { x: { beginAtZero: true } } 
-        }
-    });
-}
