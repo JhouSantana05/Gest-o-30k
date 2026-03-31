@@ -12,15 +12,27 @@
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--light); margin: 0; padding: 0; color: var(--dark); }
 
+        /* LOGIN */
         #tela-login { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .login-card { background: white; width: 100%; max-width: 350px; padding: 30px; border-radius: 20px; text-align: center; }
+        .login-card { background: white; width: 100%; max-width: 350px; padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
 
         #app-content { display: none; }
 
+        /* DASHBOARD */
         .dashboard-fixo { background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%); color: white; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 1000; border-bottom: 3px solid var(--primary); }
+        .reserva-valor { font-size: 1.8rem; font-weight: 800; color: var(--warning); margin: 5px 0; }
+        .projeção-box { background: rgba(255,255,255,0.12); padding: 12px; border-radius: 12px; font-size: 0.85rem; border: 1px solid var(--primary); max-width: 550px; margin: 15px auto; line-height: 1.4; }
+        .data-alvo { display: block; font-size: 1.1rem; font-weight: 800; color: #fff; text-transform: uppercase; margin-top: 4px; }
         
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .stat-card { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); }
+        
+        .barra-bg { background: rgba(255,255,255,0.1); height: 10px; border-radius: 5px; margin: 10px auto; overflow: hidden; max-width: 600px; }
+        #barra-progresso { background: var(--primary); height: 100%; width: 0%; transition: 1.5s ease-in-out; }
+
+        /* LAYOUT RESPONSIVO */
         .main-layout { display: flex; flex-direction: column; gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
-        .card { background: white; padding: 20px; border-radius: 15px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .card { background: white; padding: 20px; border-radius: 15px; border: 1px solid #e2e8f0; margin-bottom: 15px; }
 
         @media (min-width: 850px) {
             .main-layout { flex-direction: row; align-items: flex-start; }
@@ -30,34 +42,26 @@
             .nav-tabs { position: static !important; border-radius: 10px; margin-bottom: 20px; }
         }
 
-        .reserva-valor { font-size: 1.8rem; font-weight: 800; color: var(--warning); margin: 5px 0; }
-        .projeção-box { background: rgba(255,255,255,0.12); padding: 12px; border-radius: 12px; font-size: 0.85rem; border: 1px solid var(--primary); max-width: 550px; margin: 15px auto; line-height: 1.4; }
-        .data-alvo { display: block; font-size: 1.1rem; font-weight: 800; color: #fff; text-transform: uppercase; margin-top: 4px; }
-        
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .stat-card { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); }
-        
-        .barra-bg { background: rgba(255,255,255,0.1); height: 10px; border-radius: 5px; margin: 10px auto; overflow: hidden; max-width: 600px; position: relative;}
-        #barra-progresso { background: var(--primary); height: 100%; width: 0%; transition: 1.5s ease-in-out; }
-
-        /* EDIÇÃO DE META */
-        .meta-editor { display: none; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; align-items: center; justify-content: center; gap: 10px; }
-        .meta-editor input { width: 120px; padding: 5px; border-radius: 5px; border: none; font-weight: bold; text-align: center; }
-        .btn-gear { background: none; border: none; color: white; opacity: 0.6; cursor: pointer; font-size: 0.9rem; }
-
+        /* NAVEGAÇÃO */
         .nav-tabs { display: flex; background: #fff; position: sticky; top: 195px; z-index: 999; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .nav-tabs button { flex: 1; padding: 15px; border: none; background: none; font-weight: 700; color: var(--slate); cursor: pointer; }
         .nav-tabs button.active { color: var(--primary); border-bottom: 4px solid var(--primary); background: #f0fdf4; }
 
+        /* FORMULÁRIO */
         .input-group { position: relative; margin-bottom: 12px; }
         .input-group i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--slate); }
         .input-group input, .input-group select { width: 100%; padding: 12px 12px 12px 40px; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 1rem; background: #f8fafc; }
 
-        .btn-main { background: var(--primary); color: white; border: none; font-weight: 700; padding: 15px; border-radius: 10px; width: 100%; cursor: pointer; }
+        .btn-main { background: var(--primary); color: white; border: none; font-weight: 700; padding: 15px; border-radius: 10px; width: 100%; cursor: pointer; font-size: 1rem; }
         .btn-csv { background: var(--dark); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; margin-top: 10px; cursor: pointer; }
         
+        /* ITENS DA LISTA */
         .item-transacao { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-radius: 12px; background: #fff; margin-bottom: 10px; border: 1px solid #f1f5f9; }
         .cat-icon { width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 1.2rem; }
+        .btn-acao { background: none; border: 1px solid #eee; padding: 8px; border-radius: 8px; margin-left: 5px; color: var(--slate); cursor: pointer; }
+
+        /* EDITOR META */
+        .meta-editor { display: none; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; align-items: center; justify-content: center; gap: 10px; }
         .logout-btn { position: absolute; top: 15px; right: 20px; color: white; opacity: 0.5; font-size: 1.5rem; cursor: pointer; }
     </style>
 </head>
@@ -65,87 +69,95 @@
 
     <div id="tela-login">
         <div class="login-card">
-            <i class="fa-solid fa-shield-halved" style="font-size: 2.5rem; color: var(--primary);"></i>
-            <h2 style="margin: 15px 0;">Acesso Gestão</h2>
-            <select id="login-usuario" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px;"><option value="">Usuário...</option><option value="Jhones">Jhones</option><option value="Tatiane">Tatiane</option></select>
-            <input type="password" id="login-senha" placeholder="Senha 4 dígitos" inputmode="numeric" maxlength="4" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;">
-            <button onclick="verificarLogin()" class="btn-main">ENTRAR</button>
-            <p id="erro-login" style="color: var(--danger); font-size: 0.8rem; margin-top: 10px; display: none;">Senha incorreta!</p>
+            <i class="fa-solid fa-user-lock" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 10px;"></i>
+            <h2>Acesso Restrito</h2>
+            <select id="login-usuario" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px;">
+                <option value="">Selecione o Usuário...</option>
+                <option value="Jhones">Jhones</option>
+                <option value="Tatiane">Tatiane</option>
+            </select>
+            <input type="password" id="login-senha" placeholder="Senha de 4 dígitos" inputmode="numeric" maxlength="4" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
+            <button onclick="verificarLogin()" class="btn-main">ENTRAR NO APP</button>
+            <p id="erro-login" style="color: var(--danger); font-size: 0.8rem; margin-top: 10px; display: none;">Dados incorretos!</p>
         </div>
     </div>
 
     <div id="app-content">
         <div class="dashboard-fixo">
             <i class="fa-solid fa-power-off logout-btn" onclick="logout()"></i>
-            <small>RESERVA TOTAL PARA O OBJETIVO</small>
+            <small>VALOR TOTAL ACUMULADO</small>
             <div id="saldo-reserva" class="reserva-valor">R$ 0,00</div>
             
-            <div class="projeção-box"><i class="fa-solid fa-chart-line"></i> <span id="texto-projeção">Processando histórico...</span></div>
+            <div class="projeção-box"><i class="fa-solid fa-chart-line"></i> <span id="texto-projeção">Analisando...</span></div>
             
             <div class="stats-grid">
-                <div class="stat-card">SALDO LIVRE<br><strong id="saldo-disponivel">R$ 0,00</strong></div>
+                <div class="stat-card">DISPONÍVEL<br><strong id="saldo-disponivel">R$ 0,00</strong></div>
                 <div class="stat-card">GASTOS MÊS<br><strong id="total-saidas" style="color: #fca5a5;">R$ 0,00</strong></div>
             </div>
             
             <div class="barra-bg"><div id="barra-progresso"></div></div>
             <div style="max-width: 600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; font-weight: 700;">
                 <span id="texto-meta-porcentagem">0%</span>
-                <span onclick="toggleMetaEditor()" style="cursor:pointer">META: <span id="valor-meta-display">R$ 30.000</span> <i class="fa-solid fa-gear btn-gear"></i></span>
+                <span onclick="toggleMetaEditor()" style="cursor:pointer">OBJETIVO: <span id="valor-meta-display">R$ 30.000</span> <i class="fa-solid fa-gear" style="opacity:0.5; margin-left:5px"></i></span>
             </div>
 
             <div id="meta-editor" class="meta-editor">
-                <input type="number" id="input-nova-meta" placeholder="Nova Meta R$">
-                <button onclick="salvarNovaMeta()" style="background:var(--primary); color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer">OK</button>
+                <input type="number" id="input-nova-meta" placeholder="Novo Valor R$">
+                <button onclick="salvarNovaMeta()" style="background:var(--primary); color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:700">SALVAR</button>
             </div>
         </div>
 
         <div class="nav-tabs">
-            <button id="tab-add" class="active" onclick="mudarPagina('add')">LANÇAMENTOS</button>
+            <button id="tab-add" class="active" onclick="mudarPagina('add')">NOVO REGISTRO</button>
             <button id="tab-rel" onclick="mudarPagina('rel')">RELATÓRIOS</button>
         </div>
 
         <div class="main-layout">
             <div id="page-add" class="page active" style="width: 100%;">
                 <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-                    <div class="col-form" style="flex: 1; min-width: 300px;">
+                    <div class="col-form" style="flex: 1; min-width: 320px;">
                         <div class="card">
                             <form id="form-financeiro">
                                 <input type="hidden" id="edit-id">
-                                <div class="input-group"><i class="fa-solid fa-money-bill-wave"></i><input type="number" id="valor" placeholder="Valor R$" step="0.01" required></div>
-                                <div class="input-group"><i class="fa-solid fa-tags"></i>
+                                <div class="input-group"><i class="fa-solid fa-wallet"></i><input type="number" id="valor" placeholder="0,00" step="0.01" required></div>
+                                <div class="input-group"><i class="fa-solid fa-list-ul"></i>
                                     <select id="tipo" onchange="atualizarCategorias()" required>
-                                        <option value="">Tipo...</option>
-                                        <option value="saida">Gasto</option><option value="entrada">Ganho</option><option value="reserva">Reserva Meta</option>
+                                        <option value="">Tipo de Movimentação...</option>
+                                        <option value="saida">Gasto</option><option value="entrada">Ganho</option><option value="reserva">Reserva p/ Meta</option>
                                     </select>
                                 </div>
-                                <div id="container-categoria" class="input-group" style="display:none;"><i class="fa-solid fa-list"></i><select id="categoria" onchange="atualizarSubCategorias()"></select></div>
-                                <div id="container-subcategoria" class="input-group" style="display:none;"><i class="fa-solid fa-info"></i><select id="subcategoria" onchange="toggleOutros()"></select></div>
-                                <div id="container-outros" class="input-group" style="display:none;"><i class="fa-solid fa-pen"></i><input type="text" id="desc-outros" placeholder="Descrição"></div>
+                                <div id="container-categoria" class="input-group" style="display:none;"><i class="fa-solid fa-tag"></i><select id="categoria" onchange="atualizarSubCategorias()"></select></div>
+                                <div id="container-subcategoria" class="input-group" style="display:none;"><i class="fa-solid fa-circle-info"></i><select id="subcategoria" onchange="toggleOutros()"></select></div>
+                                <div id="container-outros" class="input-group" style="display:none;"><i class="fa-solid fa-pencil"></i><input type="text" id="desc-outros" placeholder="Descrição"></div>
                                 <div class="input-group"><i class="fa-solid fa-user"></i><input type="text" id="usuario-display" readonly style="background:#eee"></div>
                                 <div class="input-group"><i class="fa-solid fa-calendar"></i><input type="date" id="data" required></div>
-                                <button type="submit" id="btn-salvar" class="btn-main">CONFIRMAR LANÇAMENTO</button>
+                                <button type="submit" id="btn-salvar" class="btn-main">CONFIRMAR</button>
                             </form>
                         </div>
                     </div>
-                    <div class="col-list" style="flex: 1.5; min-width: 300px;">
+                    <div class="col-list" style="flex: 1.5; min-width: 320px;">
                         <div id="lista-recente"></div>
                     </div>
                 </div>
             </div>
 
             <div id="page-rel" class="page" style="width: 100%;">
-                <div class="card" style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <input type="month" id="filtro-mes" onchange="processarDados()" style="flex:1; padding:10px; border-radius:8px; border:1px solid #ddd;">
-                    <button onclick="downloadCSV()" class="btn-csv" style="flex:1; margin-top:0"><i class="fa-solid fa-file-export"></i> BAIXAR CSV</button>
+                <div class="card" style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+                    <input type="month" id="filtro-mes" onchange="processarDados()" style="flex:1; padding:12px; border-radius:10px; border: 1px solid #ddd;">
+                    <button onclick="downloadCSV()" class="btn-csv" style="flex:1; margin-top:0"><i class="fa-solid fa-file-excel"></i> DOWNLOAD CSV</button>
                 </div>
+                
                 <div id="conteudo-relatorio">
-                    <div class="charts-grid" style="margin-top: 20px;">
-                        <div class="card"><h4>Entradas</h4><canvas id="chartEntradas"></canvas></div>
-                        <div class="card"><h4>Saídas</h4><canvas id="chartSaidas"></canvas></div>
+                    <div class="charts-grid" style="margin-top: 10px;">
+                        <div class="card"><h4>Ganhos (Barras)</h4><canvas id="chartEntradas" style="max-height:250px"></canvas></div>
+                        <div class="card"><h4>Gastos (Barras)</h4><canvas id="chartSaidas" style="max-height:250px"></canvas></div>
                     </div>
                     <div id="lista-periodo" style="margin-top: 20px;"></div>
                 </div>
-                <div id="aviso-vazio" class="card" style="display:none; text-align:center;">Mês sem movimentações.</div>
+                
+                <div id="aviso-vazio" class="card" style="display:none; text-align:center; padding: 40px; color: var(--slate);">
+                    <i class="fa-solid fa-face-meh fa-2x"></i><br><br>Mês indisponível ou sem movimentação.
+                </div>
             </div>
         </div>
     </div>
@@ -165,6 +177,8 @@
             const s = localStorage.getItem('user30k');
             if(s) { logadoComo = s; entrarNoApp(); }
             document.getElementById('valor-meta-display').innerText = `R$ ${valorMeta.toLocaleString('pt-BR')}`;
+            document.getElementById('data').valueAsDate = new Date();
+            document.getElementById('filtro-mes').value = new Date().toISOString().substring(0, 7);
         };
 
         window.toggleMetaEditor = () => {
@@ -217,8 +231,8 @@
 
         document.getElementById('form-financeiro').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const dados = { valor: parseFloat(document.getElementById('valor').value), tipo: document.getElementById('tipo').value, categoria: document.getElementById('categoria').value||"Reserva", subcategoria: document.getElementById('subcategoria').value||"Aporte Meta", usuario: logadoComo, data: document.getElementById('data').value, timestamp: new Date().getTime() };
             const id = document.getElementById('edit-id').value;
+            const dados = { valor: parseFloat(document.getElementById('valor').value), tipo: document.getElementById('tipo').value, categoria: document.getElementById('categoria').value||"Reserva", subcategoria: document.getElementById('subcategoria').value||"Aporte Meta", usuario: logadoComo, data: document.getElementById('data').value, timestamp: new Date().getTime() };
             id ? await updateDoc(doc(db, "transacoes", id), dados) : await addDoc(colRef, dados);
             resetForm();
         });
@@ -229,7 +243,7 @@
             atualizarCategorias(); document.getElementById('categoria').value = t.categoria; atualizarSubCategorias(); document.getElementById('subcategoria').value = t.subcategoria;
             document.getElementById('data').value = t.data; document.getElementById('btn-salvar').innerText = "ATUALIZAR"; mudarPagina('add');
         };
-        window.resetForm = () => { document.getElementById('edit-id').value = ""; document.getElementById('form-financeiro').reset(); document.getElementById('data').valueAsDate = new Date(); document.getElementById('usuario-display').value = logadoComo; document.getElementById('btn-salvar').innerText = "CONFIRMAR LANÇAMENTO"; };
+        window.resetForm = () => { document.getElementById('edit-id').value = ""; document.getElementById('form-financeiro').reset(); document.getElementById('data').valueAsDate = new Date(); document.getElementById('usuario-display').value = logadoComo; document.getElementById('btn-salvar').innerText = "CONFIRMAR"; };
 
         onSnapshot(query(colRef, orderBy("timestamp", "desc")), (snap) => { localData = snap.docs.map(d => ({ id: d.id, ...d.data() })); processarDados(); });
 
@@ -251,13 +265,13 @@
             const projElement = document.getElementById('texto-projeção');
 
             if(rT >= valorMeta) {
-                projElement.innerHTML = "✨ <strong>OBJETIVO ALCANÇADO!</strong>";
+                projElement.innerHTML = "✨ <strong>META ALCANÇADA!</strong>";
             } else if(economiaMes > 0) {
                 const meses = Math.ceil((valorMeta - rT) / economiaMes);
                 const dataAlvo = new Date(); dataAlvo.setMonth(dataAlvo.getMonth() + meses);
-                projElement.innerHTML = `No ritmo de R$ ${economiaMes.toLocaleString('pt-BR')}/mês, faltam <strong>${meses} meses</strong>.<br><span class="data-alvo"><i class="fa-solid fa-calendar-check"></i> Conclusão em: ${dataAlvo.toLocaleString('pt-BR', {month:'long'})} de ${dataAlvo.getFullYear()}</span>`;
+                projElement.innerHTML = `No ritmo de R$ ${economiaMes.toLocaleString('pt-BR')}/mês, faltam <strong>${meses} meses</strong>.<br><span class="data-alvo"><i class="fa-solid fa-calendar-check"></i> Final em: ${dataAlvo.toLocaleString('pt-BR', {month:'long'})} de ${dataAlvo.getFullYear()}</span>`;
             } else {
-                projElement.innerHTML = "Defina um aporte este mês para ver a projeção.";
+                projElement.innerHTML = "Reserve algo este mês para ver a projeção.";
             }
 
             const mesFiltro = document.getElementById('filtro-mes').value;
@@ -278,8 +292,18 @@
             };
             const dE = prep('entrada'); const dS = prep('saida');
             if(chartE) chartE.destroy(); if(chartS) chartS.destroy();
-            chartE = new Chart(document.getElementById('chartEntradas'), { type:'doughnut', data:{ labels:dE.l, datasets:[{data:dE.v, backgroundColor:['#10b981','#34d399','#6ee7b7']}] } });
-            chartS = new Chart(document.getElementById('chartSaidas'), { type:'doughnut', data:{ labels:dS.l, datasets:[{data:dS.v, backgroundColor:['#ef4444','#f87171','#fca5a5']}] } });
+            
+            // VOLTANDO PARA GRÁFICOS DE BARRA
+            chartE = new Chart(document.getElementById('chartEntradas'), { 
+                type:'bar', 
+                data:{ labels:dE.l, datasets:[{label:'R$', data:dE.v, backgroundColor:'#10b981'}] },
+                options:{ plugins:{ legend:{display:false} }, scales:{ y:{beginAtZero:true} } }
+            });
+            chartS = new Chart(document.getElementById('chartSaidas'), { 
+                type:'bar', 
+                data:{ labels:dS.l, datasets:[{label:'R$', data:dS.v, backgroundColor:'#ef4444'}] },
+                options:{ plugins:{ legend:{display:false} }, scales:{ y:{beginAtZero:true} } }
+            });
         }
 
         window.downloadCSV = () => {
@@ -307,8 +331,6 @@
                 </div>
             `).join('');
         }
-        document.getElementById('data').valueAsDate = new Date();
-        document.getElementById('filtro-mes').value = new Date().toISOString().substring(0, 7);
     </script>
 </body>
 </html>
